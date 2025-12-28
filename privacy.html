@@ -19,6 +19,16 @@
         <link href="css/templatemo-nomad-force.css" rel="stylesheet">
     </head>
     <body>
+        <script>
+            // Force HTTPS when possible (skip localhost)
+            (function(){
+              try {
+                if (typeof window !== 'undefined' && window.location && window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                  window.location.href = 'https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash;
+                }
+              } catch (e) { /* ignore */ }
+            })();
+        </script>
         <a class="skip-link" href="#main">Preskočiť na obsah</a>
         <nav class="navbar navbar-expand-lg sticky-top bg-light shadow-lg">
             <div class="container">

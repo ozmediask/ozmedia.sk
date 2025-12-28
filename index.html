@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Nomad Force HTML Bootstrap 5 Template</title>
+        <title>OZMedia</title>
 
         <!-- CSS FILES -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+        <!-- Quick fix: upgrade any insecure (http:) subresource requests to https -->
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-icons.css" rel="stylesheet">
@@ -45,15 +48,21 @@
 
 <!--
 
-TemplateMo 567 Nomad Force
-
-https://templatemo.com/tm-567-nomad-force
 
 -->
     </head>
     
     <body>
         <script>
+            // Force HTTPS when possible (skip localhost)
+            (function(){
+              try {
+                if (typeof window !== 'undefined' && window.location && window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                  window.location.href = 'https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash;
+                }
+              } catch (e) { /* ignore */ }
+            })();
+
             // Redirect legacy fragment URL to dedicated privacy page
             if (typeof window !== 'undefined' && window.location && window.location.hash === '#privacy') {
                 window.location.href = 'privacy.html';
@@ -75,7 +84,7 @@ https://templatemo.com/tm-567-nomad-force
                     </h1>
 
                     <p class="text-secondary-white-color mb-4" data-aos="fade-up" data-aos-delay="1000">
-                        Letecké zábery, ktoré zaujmú na prvý pohľad.
+                        Dronové zábery, ktoré zaujmú na prvý pohľad.
                     </p>
 
                     <a href="#news" class="btn btn-primary rounded-pill px-4 py-2" data-aos="fade-up" data-aos-delay="1200">
@@ -139,8 +148,8 @@ https://templatemo.com/tm-567-nomad-force
                 <div class="container mb-5 pb-lg-5">
                     <div class="row">
                         <div class="col-12 text-center mb-5">
-                            <h2 class="mb-3" data-aos="fade-up">Letecké zábery a video produkcia</h2>
-                            <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">Realizujeme letecké aj pozemné natáčanie pre developerov, firmy a podujatia po strednom Slovensku. Vytvárame vizuálny obsah, ktorý prehľadne a atraktívne predstaví váš projekt.</p>
+                            <h2 class="mb-3" data-aos="fade-up">Dronové zábery a video produkcia</h2>
+                            <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">Realizujeme dronové aj pozemné natáčanie pre developerov, firmy a podujatia po strednom Slovensku. Vytvárame vizuálny obsah, ktorý prehľadne a atraktívne predstaví váš projekt.</p>
                         </div>
                     </div>
                 </div>
@@ -217,7 +226,7 @@ https://templatemo.com/tm-567-nomad-force
                                         <div class="feature-number">02</div>
                                         <div>
                                             <h5 class="feature-title">Komplexné zábery</h5>
-                                            <p class="feature-text">Spájame letecké a pozemné zábery, aby sme váš projekt zachytili komplexne a bez obmedzení.</p>
+                                            <p class="feature-text">Spájame dronové a pozemné zábery, aby sme váš projekt zachytili komplexne a bez obmedzení.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +262,7 @@ https://templatemo.com/tm-567-nomad-force
                     <div class="row">
                         <div class="col-12 text-center mb-5">
                             <h2 class="mb-3" data-aos="fade-up">Z nášho portfólia</h2>
-                            <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100">Zábery, ktoré oslovia</p>
+                            <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100"></p>
                         </div>
 
                         <!-- Portfolio Grid -->
@@ -510,6 +519,27 @@ https://templatemo.com/tm-567-nomad-force
     </div>
 
 </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="testimonials" class="section-padding testimonials-section" data-aos="fade-up">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center mb-5">
+                            <h2 class="mb-3">Referencie</h2>
+                            <p class="lead text-muted">Čo o nás hovoria klienti</p>
+                        </div>
+
+                        <div id="reviews-list" class="row g-4">
+                            <div class="col-12">
+                                <p class="text-muted py-4 text-center">Načítavam recenzie...</p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-3">
+                            <a id="google-reviews-more" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Pozrieť viac na Google</a>
                         </div>
                     </div>
                 </div>
