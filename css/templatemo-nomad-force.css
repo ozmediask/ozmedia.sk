@@ -771,7 +771,9 @@ strong {
 
 .service-card {
   padding: 0; /* ensure image touches card edges */
-  background: transparent;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden; /* clip image to rounded corners */
 }
 
 .service-card-image {
