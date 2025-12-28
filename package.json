@@ -1,0 +1,11 @@
+{
+  "name": "ozmedia-site",
+  "version": "1.0.0",
+  "description": "Static site for OZMedia with helper scripts to preview locally",
+  "scripts": {
+    "start": "npx http-server -p 8080",
+    "start:dev": "npx http-server -p 8080 -c-1"
+  },
+  "author": "",
+  "license": "MIT"
+}
