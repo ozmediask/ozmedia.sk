@@ -787,19 +787,20 @@ strong {
 }
 
 .service-card-overlay {
+  /* Make overlay a subtle bottom gradient so the image remains visible */
   position: absolute;
-  bottom: 0;
   left: 0;
   right: 0;
-  top: 0;
-  background: rgba(255,255,255,0.94);
+  bottom: 0;
+  top: auto;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px 20px;
-  text-align: center;
-  transition: all 0.3s ease;
-  color: var(--dark-color);
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 20px;
+  text-align: left;
+  transition: all 0.25s ease;
+  color: var(--white-color);
 }
 
 .service-icon {
