@@ -630,9 +630,10 @@ strong {
   }
 }
 
+.portfolio-item { height: 330px; overflow: hidden; }
 .portfolio-item img {
   width: 100%;
-  height: 330px; /* increased 1.5x */
+  height: 100%; /* fill parent */
   object-fit: cover;
   border-radius: 8px;
   transition: transform .35s ease, box-shadow .35s ease;
@@ -768,14 +769,20 @@ strong {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
+.service-card {
+  padding: 0; /* ensure image touches card edges */
+  background: transparent;
+}
+
 .service-card-image {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 260px; /* fixed visual height to avoid gaps */
   overflow: hidden;
 }
 
 .service-card-image img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
