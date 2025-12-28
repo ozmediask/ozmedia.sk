@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Desktop/ozmedia.sk/css"
+		},
+		{
+			"path": "../../../Desktop/ozmedia.sk/fonts"
+		},
+		{
+			"path": "../../../Desktop/ozmedia.sk/images"
+		},
+		{
+			"path": "../../../Desktop/ozmedia.sk/js"
+		},
+		{
+			"path": "../../../Desktop/ozmedia.sk/server"
+		},
+		{
+			"path": "../../../Desktop/ozmedia.sk/videos"
+		}
+	],
+	"settings": {}
+}
