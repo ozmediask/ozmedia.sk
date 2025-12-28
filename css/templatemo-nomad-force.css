@@ -796,20 +796,30 @@ strong {
 }
 
 .service-card-overlay {
-  /* Make overlay a subtle bottom gradient so the image remains visible */
+  /* Hidden by default to avoid a persistent bottom bar; visible on hover */
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   top: auto;
+  height: 64px;
+  padding: 16px 20px;
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-start;
-  padding: 20px;
   text-align: left;
-  transition: all 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
   color: var(--white-color);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.service-card:hover .service-card-overlay {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .service-icon {
