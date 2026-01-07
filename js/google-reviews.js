@@ -57,6 +57,12 @@
         btn.href = moreLink.href;
       }
     }
+
+    // Fallback: if config provides a placeUrl, prefer that when available
+    if (window.GOOGLE_REVIEWS_CONFIG && window.GOOGLE_REVIEWS_CONFIG.placeUrl) {
+      var btnFallback = document.getElementById('google-reviews-more');
+      if (btnFallback) btnFallback.href = window.GOOGLE_REVIEWS_CONFIG.placeUrl;
+    }
   }
 
   function formatPlaceUrl(placeId) {
@@ -65,10 +71,13 @@
   }
 
   function onMapsApiReady(cfg) {
-    if (!cfg || !cfg.placeId) {
-      debug('Google reviews: configuration missing (placeId).');
+    if (!cfg || (!cfg.placeId && !cfg.placeUrl)) {
+      debug('Google reviews: configuration missing (placeId or placeUrl).');
       var reviewsListEl = document.getElementById('reviews-list');
       if (reviewsListEl) reviewsListEl.innerHTML = '<p class="text-muted py-4 text-center">Nepodarilo sa načítať konfiguráciu recenzií.</p>';
+      // If a placeUrl is available, set the more-button to it so users can still find the place
+      var moreLink = document.getElementById('google-reviews-more');
+      if (moreLink && cfg && cfg.placeUrl) moreLink.href = cfg.placeUrl;
       return;
     }
     var placeId = cfg.placeId;
@@ -108,6 +117,19 @@
     });
   }
 
+  // Fetch a local JSON fallback (served with the static site) which should look like:
+  // { "place": { "url": "...", "reviews": [ { author_name, rating, text, ... }, ... ] } }
+  function fetchLocalReviews(localUrl) {
+    if (!localUrl) return Promise.reject(new Error('No local reviews URL'));
+    return fetch(localUrl, { method: 'GET' }).then(function(res) {
+      if (!res.ok) throw new Error('Local reviews fetch failed: ' + res.status);
+      return res.json();
+    }).then(function(json) {
+      if (!json) throw new Error('Invalid local reviews response');
+      return json;
+    });
+  }
+
   function loadMapsScript(apiKey, callbackName) {
     if (typeof apiKey !== 'string' || apiKey.indexOf('YOUR_') === 0) {
       debug('Google reviews: API key not set or is a placeholder.');
@@ -136,44 +158,58 @@
     var cfg = window.GOOGLE_REVIEWS_CONFIG || {};
     var apiKey = cfg.apiKey || 'YOUR_API_KEY';
     var proxy = (window.REVIEWS_PROXY && String(window.REVIEWS_PROXY).trim()) || '';
+    var localUrl = cfg.localReviewsUrl || '/data/reviews.json';
 
     window.initGoogleReviews = function() { onMapsApiReady(cfg); };
 
     // render fallback link immediately
     var moreLink = document.getElementById('google-reviews-more');
     if (moreLink && cfg.placeId) moreLink.href = formatPlaceUrl(cfg.placeId);
-    // If proxy is configured, attempt to fetch via the proxy first
-    if (proxy && cfg.placeId) {
+
+    // Helper to attempt local JSON fallback and render
+    function tryLocalFallback() {
+      fetchLocalReviews(localUrl).then(function(payload) {
+        var place = payload.place || payload || {};
+        var reviews = place.reviews || place.review || [];
+        renderReviews(reviews, document.getElementById('reviews-list'), { href: place.url || cfg.placeUrl || '#' });
+        if (moreLink && place.url) moreLink.href = place.url;
+      }).catch(function(err) {
+        console.warn('Local fallback failed:', err);
+        var reviewsListEl = document.getElementById('reviews-list');
+        if (reviewsListEl) reviewsListEl.innerHTML = '<p class="text-muted py-4 text-center">Recenzie nie sú dostupné.</p>';
+      });
+    }
+
+    // If proxy is configured, attempt to fetch via the proxy first (proxy may have a default placeId)
+    if (proxy) {
       var reviewsListEl = document.getElementById('reviews-list');
       if (reviewsListEl) reviewsListEl.innerHTML = '<p class="text-muted py-4 text-center">Načítavam recenzie...</p>';
-      fetchViaProxy(proxy, cfg.placeId).then(function(payload) {
+      var pPlaceId = cfg.placeId || null;
+      fetchViaProxy(proxy, pPlaceId).then(function(payload) {
         var place = payload.place || {};
         var reviews = place.reviews || place.review || [];
-        renderReviews(reviews, document.getElementById('reviews-list'), { href: place.url || formatPlaceUrl(cfg.placeId) });
+        renderReviews(reviews, document.getElementById('reviews-list'), { href: place.url || cfg.placeUrl || formatPlaceUrl(cfg.placeId) });
         // Update 'more' link to the place url if available
         if (moreLink && place.url) moreLink.href = place.url;
       }).catch(function(err) {
-        console.warn('Proxy error, falling back to client-side:', err);
-        // fallback to client-side approach
-        if (apiKey && apiKey.indexOf('YOUR_') !== 0) {
+        console.warn('Proxy error, falling back to Maps API/local JSON:', err);
+        // Try Maps client-side if possible
+        if (apiKey && apiKey.indexOf('YOUR_') !== 0 && cfg.placeId) {
           loadMapsScript(apiKey, 'initGoogleReviews');
         } else {
-          var reviewsListEl2 = document.getElementById('reviews-list');
-          if (reviewsListEl2) reviewsListEl2.innerHTML = '<p class="text-muted py-4 text-center">Recenzie nie sú dostupné (chyba proxy a nie je nastavený API kľúč).</p>';
+          // otherwise try local JSON fallback
+          tryLocalFallback();
         }
       });
       return;
     }
 
-    // If no proxy or proxy not used, use client-side Maps API
-    if (apiKey && apiKey.indexOf('YOUR_') !== 0) {
+    // If no proxy or proxy not used, try client-side Maps API first (requires apiKey + placeId), otherwise local JSON
+    if (apiKey && apiKey.indexOf('YOUR_') !== 0 && cfg.placeId) {
       loadMapsScript(apiKey, 'initGoogleReviews');
     } else {
-      // no key provided; show fallback message
-      var reviewsListEl3 = document.getElementById('reviews-list');
-      if (reviewsListEl3) {
-        reviewsListEl3.innerHTML = '<p class="text-muted py-4 text-center">Recenzie nie sú dostupné (Google API kľúč nie je nastavený).</p>';
-      }
+      // No API key or placeId for Maps; try local JSON fallback
+      tryLocalFallback();
     }
   }
 

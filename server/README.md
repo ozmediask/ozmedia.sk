@@ -50,3 +50,9 @@ Default server port is `8080`. Change via `PORT` env var.
     </script>
 
   - You can omit `placeId` in the client if you have `GOOGLE_PLACE_ID` set on the server. Otherwise include `placeId` in `window.GOOGLE_REVIEWS_CONFIG`.
+
+  - Deployment tip: for a frictionless setup "that works for everyone", consider hosting the proxy at the same origin (for example, mount the server behind your web server at `/api/`). The frontend will attempt to use the same origin by default (it sets `window.REVIEWS_PROXY = window.location.origin`), so if the proxy is accessible at `<your-site>/api/reviews` the reviews will work without further client changes.
+
+  - Fallback: if you don't want to set a Place ID, you can set `GOOGLE_PLACE_ID` on the server or set `placeUrl` in `window.GOOGLE_REVIEWS_CONFIG` on the client (a Google share link) so the "Pozrieť viac na Google" button always points to your place.
+
+  - Local JSON fallback: you can also provide a simple JSON file served with your site at `/data/reviews.json` (example included). Edit that file directly to add/remove reviews and the frontend will automatically use it when the proxy and Google API aren't available.

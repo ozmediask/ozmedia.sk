@@ -1,0 +1,29 @@
+{
+  "place": {
+    "name": "OZMedia",
+    "url": "https://search.google/K16rprSmALjDKRwKN",
+    "reviews": [
+      {
+        "author_name": "Ján Novák",
+        "rating": 5,
+        "text": "Skvelé služby, profesionálny prístup a rýchle dodanie. Odporúčam!",
+        "relative_time_description": "1 mesiac",
+        "time": 1700000000
+      },
+      {
+        "author_name": "Petra K.",
+        "rating": 5,
+        "text": "Priateľský tím a výborné výsledky. Presne tak, ako sme chceli.",
+        "relative_time_description": "3 mesiace",
+        "time": 1690000000
+      },
+      {
+        "author_name": "Marek R.",
+        "rating": 4,
+        "text": "Dobrá komunikácia, malá drobná zdržania, ale výsledok bol super.",
+        "relative_time_description": "6 mesiacov",
+        "time": 1680000000
+      }
+    ]
+  }
+}

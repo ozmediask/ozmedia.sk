@@ -16,6 +16,8 @@ If you want to open the site locally, use one of these options:
    - `cd server && npm install && npm start`
    - The proxy defaults to port 8080 (change with `PORT` env var).
 
+   - Alternatively, the site supports a *local JSON fallback* so you don't need Google Cloud: edit `data/reviews.json` (example included in the repo) to add/remove reviews and the frontend will automatically use it when the proxy and Google API are not available.
+
 Why you saw the DNS error
 -------------------------
 The browser was trying to resolve `c` as a hostname because the path was entered incorrectly in the address bar (e.g., `c/Users/...`). Use `file:///...` or serve the site to avoid this.

@@ -684,12 +684,18 @@
              */
             window.GOOGLE_REVIEWS_CONFIG = {
                 apiKey: 'YOUR_GOOGLE_API_KEY', // e.g. 'AIzaSy...'
-                placeId: 'YOUR_GOOGLE_PLACE_ID', // e.g. 'ChIJN1t_tDeuEmsRUsoyG83frY4'
+                placeId: '', // Optional: e.g. 'ChIJN1t_tDeuEmsRUsoyG83frY4' (if set here, client-side Maps API can fetch reviews)
+                // placeUrl: optional friendly share link to the Google place — used as a fallback for the "Pozrieť viac na Google" button
+                placeUrl: 'https://share.google/K16rprSmALjDKRwKN',
+                // localReviewsUrl points to a simple JSON file served with your site. Edit `data/reviews.json` to add/remove reviews.
+                localReviewsUrl: '/data/reviews.json',
                 maxReviews: 4
             };
-            // Optional: if you have the server proxy running, set REVIEWS_PROXY to the proxy's base URL prior to loading google-reviews.js
-            // Example: window.REVIEWS_PROXY = 'http://localhost:8080';
-            window.REVIEWS_PROXY = window.REVIEWS_PROXY || '';
+            // Recommended: run the small proxy server in `server/` and host it at the same origin or set the base URL below
+            // If you host the server on the same domain (e.g. via reverse proxy at /api), the frontend will automatically try it.
+            // Example (local dev): window.REVIEWS_PROXY = 'http://localhost:8080';
+            // Default behaviour: try same-origin proxy at the site's origin
+            window.REVIEWS_PROXY = window.REVIEWS_PROXY || window.location.origin;
         </script>
         <script src="js/google-reviews.js"></script>
 
